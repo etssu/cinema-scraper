@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-Regular.woff2') format('woff2');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-Medium.woff2') format('woff2');
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-Bold.woff2') format('woff2');
+    font-weight: 700;
+}
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-BoldItalic.woff2') format('woff2');
+    font-weight: 700;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-Italic.woff2') format('woff2');
+    font-style: italic;
+}
+
+body {
+    font-family: 'Nunito', Helvetica, sans-serif;
+}
+header, 
+footer {
+    background-color: #642CA9;
+    color: #FFEBF5;
+    padding: 20px 24px;
+    text-align: center;
+}
+
+.header-container p {
+    margin: 5px 0 0; 
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-content p {
+  margin: 0;
+}
+
+.libraries {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.libraries a {
+  color: var(--color-header-text);
+  text-decoration: none;
+}
+
+.libraries a:hover {
+  text-decoration: underline;
+}
+
