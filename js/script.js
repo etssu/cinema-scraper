@@ -1,6 +1,14 @@
 const SOURCE_WEBSITE = "../src/website.html";
 
 let favoriteBooks = [];
+const ratings = {
+    One: 1,
+    Two: 2,
+    Three: 3,
+    Four: 4,
+    Five: 5
+};
+
 
 // Remove extra whitespace
 function cleanText(text){
@@ -58,8 +66,21 @@ function parseBooks(doc) {
     return books;
 }
 
+function createStarRating(rating){
+    let stars = "";
+    const ratingNumber = ratings[rating];
+    for (let i = 1; i <= 5; i++){
+        if (i <= ratingNumber) {
+            stars += "★";
+        } else {
+            stars += "☆";
+        }
+    }
+    return stars;
+}
+
 function createBookCard(book){
-    const card = $("<article>").addClass("book-card card mb-3");
+    const card = $("<article>").addClass("book-card card mb-3 h-100");
 
     $("<img>")
         .addClass("card-img-top p-3")
@@ -70,18 +91,18 @@ function createBookCard(book){
             objectFit: "contain"
         })
         .appendTo(card);
-     const body = $("<div>").addClass("card-body");
+    const body = $("<div>").addClass("card-body d-flex flex-column");
 
     $("<h5>")
         .addClass("card-title")
         .text(book.title)
         .appendTo(body);
 
-    $("<p>").addClass("card-text").text(book.rating).appendTo(body);
+    $("<p>").addClass("card-text").text(createStarRating(book.rating)).appendTo(body);
     $("<p>").addClass("card-text fw-bold").text(book.price).appendTo(body);
     $("<p>").addClass("card-text").text(book.availability).appendTo(body);
 
-    $("<button>").addClass("btn btn-outline-danger favorite-btn")
+    $("<button>").addClass("btn btn-outline-danger favorite-btn mt-auto")
         .text("♡ Add to favorites")
         .attr("data-title", book.title)
         .appendTo(body);
@@ -145,7 +166,9 @@ function loadCachedBooks(){
 }
 
 function setupFavoriteEvents() {
-    $("#books-container").on("click", ".favorite-btn", function () {
+    $("#books-container")
+    .off("click", ".favorite-btn")
+    .on("click", ".favorite-btn", function () {
         const title = $(this).attr("data-title");
 
         if (!favoriteBooks.includes(title)){
@@ -202,5 +225,33 @@ async function main() {
         console.error("Nepodarilo sa načítať alebo spracovať menu:", error);
     }
 }
+
+$("#refresh-menu").on("click", async function (){
+    $("#menu-loading").prop("hidden", false);
+    $(this).prop("disabled", true);
+
+    try {
+        localStorage.removeItem("booksStock");
+        await main();
+    } finally {
+        $("#menu-loading").prop("hidden", true);
+        $(this).prop("disabled", false);
+    }
+});
+
+$("#clear-menu-cache").on("click", function () {
+    console.log("Clear button clicked");
+    localStorage.removeItem("booksStock");
+    console.log(localStorage.getItem("booksStock"));
+
+    $("#books-container").empty();
+
+    $("<p>")
+        .addClass("menu-empty-selection")
+        .text("Cached data was cleared. Refresh to load books again.")
+        .appendTo("#books-container");
+
+    alert("Uložené dáta boli vymazané.");
+})
 
 main();
